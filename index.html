@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="hearts"></div>
+<div id="bigEmoji"></div>
+
+<div class="stage">
+  <p class="eyebrow">sebuah pertanyaan kecil, untuk</p>
+  <div class="art">💌</div>
+  <h1>Buat <span class="name" id="namaCewek">Kamu</span>,<br>mau nggak jadi pacar aku?</h1>
+  <p class="lead" id="pesan">
+    Aku udah mikirin ini lama banget. Nggak ada cara yang lebih baik selain nanya langsung — jadi ini jawabannya ada di tangan kamu.
+  </p>
+
+  <div class="choices">
+    <button id="yes" onclick="showResult()">Ya, aku mau 💕</button>
+    <button id="no" onmouseover="runAway(this)" onclick="runAway(this)">Nggak dulu deh</button>
+  </div>
+
+  <div class="result" id="result">
+    <div class="big">🎉💗🎉</div>
+    <p><strong>Yeay! Makasih udah bilang iya.</strong><br>Mulai sekarang kita resmi ya. Aku janji bakal jagain kamu baik-baik.</p>
+  </div>
+
+  <p class="footer-note">dibuat dengan sepenuh hati</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
