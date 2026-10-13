@@ -3,34 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untuk Kamu</title>
+<title>Ghani Prima Hasan — Portofolio</title>
+<meta name="description" content="Portofolio Ghani Prima Hasan, mahasiswa DIII Politeknik ATI Padang yang sedang mencari tempat magang.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="hearts"></div>
-<div id="bigEmoji"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
 
-<div class="stage">
-  <p class="eyebrow">sebuah pertanyaan kecil, untuk</p>
-  <div class="art">💌</div>
-  <h1>Buat <span class="name" id="namaCewek">Kamu</span>,<br>mau nggak jadi pacar aku?</h1>
-  <p class="lead" id="pesan">
-    Aku udah mikirin ini lama banget. Nggak ada cara yang lebih baik selain nanya langsung — jadi ini jawabannya ada di tangan kamu.
-  </p>
+<header class="nav" id="nav">
+  <div class="nav__bar">
+    <a href="#beranda" class="logo" aria-label="Ghani, ke beranda">
+      <span class="logo__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>Ghani</span>
+    </a>
 
-  <div class="choices">
-    <button id="yes" onclick="showResult()">Ya, aku mau 💕</button>
-    <button id="no" onmouseover="runAway(this)" onclick="runAway(this)">Nggak dulu deh</button>
+    <nav class="nav__links" id="navLinks" aria-label="Navigasi utama">
+      <span class="nav__indicator" id="indicator" aria-hidden="true"></span>
+      <a href="#beranda" class="nav__link">Beranda</a>
+      <a href="#tentang" class="nav__link">Tentang</a>
+      <a href="#keahlian" class="nav__link">Keahlian</a>
+      <a href="#perjalanan" class="nav__link">Perjalanan</a>
+      <a href="#prestasi" class="nav__link">Prestasi</a>
+      <a href="#karya" class="nav__link">Karya</a>
+      <a href="#kontak" class="nav__link">Kontak</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Buka menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span>
+    </button>
   </div>
+</header>
 
-  <div class="result" id="result">
-    <div class="big">🎉💗🎉</div>
-    <p><strong>Yeay! Makasih udah bilang iya.</strong><br>Mulai sekarang kita resmi ya. Aku janji bakal jagain kamu baik-baik.</p>
+<main>
+
+  <!-- BERANDA -->
+  <section class="hero" id="beranda">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <h1><span class="line"><span>Ghani Prima</span></span><span class="line"><span>Hasan</span></span></h1>
+        <p class="hero__lead">Mahasiswa DIII Politeknik ATI Padang asal Agam, Sumatera Barat. Siap bekerja, suka belajar hal baru, dan pantang menyerah.</p>
+        <div class="hero__cta">
+          <a href="#kontak" class="btn btn--ink">Hubungi saya</a>
+          <a href="#karya" class="btn btn--line">Lihat karya</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marawa" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- TENTANG -->
+  <section class="sec" id="tentang">
+    <div class="wrap about">
+      <div>
+        <h2>Anak Agam yang belajar dengan cara mengerjakan.</h2>
+        <p class="statement">Sejak SMP saya sudah terbiasa memimpin dan bekerja dalam tim, mulai dari OSIM, Pramuka, sampai remaja masjid di kampung halaman.</p>
+        <p>Saya juga terbiasa tampil di depan orang banyak lewat lomba khutbah, adzan, dan pasambahan, dan mengisi waktu luang dengan mengedit video dan foto. Sekarang saya ingin belajar langsung dari dunia kerja lewat magang.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Pendidikan</dt><dd>DIII, Politeknik ATI Padang</dd></div>
+        <div><dt>Angkatan</dt><dd>2024</dd></div>
+        <div><dt>Asal</dt><dd>Magek, Kec. Kamang Magek, Kab. Agam, Sumatera Barat</dd></div>
+        <div><dt>Hobi</dt><dd>Merakit dan berkebun</dd></div>
+        <div><dt>Status</dt><dd>Mencari tempat magang</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- KEAHLIAN -->
+  <section class="sec sec--grey" id="keahlian">
+    <div class="wrap">
+      <h2>Keahlian</h2>
+
+      <ul class="apps">
+        <li><strong>Kinemaster</strong><span>Edit video</span></li>
+        <li><strong>CapCut</strong><span>Edit video</span></li>
+        <li><strong>Canva</strong><span>Desain grafis</span></li>
+        <li><strong>Lightroom</strong><span>Edit foto</span></li>
+      </ul>
+
+      <ul class="skills">
+        <li>Bekerja sama dalam tim</li>
+        <li>Kepemimpinan</li>
+        <li>Berbicara di depan umum</li>
+        <li>Pantang menyerah</li>
+        <li>Suka belajar hal baru</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PERJALANAN -->
+  <section class="sec" id="perjalanan">
+    <div class="wrap">
+      <h2>Perjalanan</h2>
+
+      <ol class="journey">
+        <li><time>2024 – sekarang</time><div><h3>Mahasiswa DIII</h3><p>Politeknik ATI Padang</p></div></li>
+        <li><time>2023 – 2024</time><div><h3>Ketua 1 Remaja Masjid Al Manar</h3><p>Nagari Magek</p></div></li>
+        <li><time>2023 – 2024</time><div><h3>Koordinator Inventaris Pramuka</h3><p>MAN 2 Agam</p></div></li>
+        <li><time>2021 – 2024</time><div><h3>Siswa SMA</h3><p>MAN 2 Agam</p></div></li>
+        <li><time>2020 – 2021</time><div><h3>Koordinator Sosial OSIM</h3><p>MTsN 2 Agam</p></div></li>
+        <li><time>2020</time><div><h3>Anggota PII</h3><p>Pelajar Islam Indonesia</p></div></li>
+        <li><time>2019 – 2020</time><div><h3>Koordinator Keagamaan OSIM</h3><p>MTsN 2 Agam</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PRESTASI -->
+  <section class="sec sec--grey" id="prestasi">
+    <div class="wrap">
+      <h2>Prestasi</h2>
+
+      <div class="awards">
+        <article class="award">
+          <p class="award__rank"><small>Juara</small>1</p>
+          <h3>Lomba Khutbah &amp; Adzan</h3>
+          <p>Tingkat Nagari, 2021</p>
+        </article>
+        <article class="award">
+          <p class="award__rank"><small>Juara</small>2</p>
+          <h3>Tambua Tansa</h3>
+          <p>Tingkat SLTA se-Sumatera Barat, 2023</p>
+        </article>
+        <article class="award">
+          <p class="award__rank"><small>Juara</small>1</p>
+          <h3>Pasambahan</h3>
+          <p>Tingkat SMA se-Cabdin 1 Sumatera Barat, 2023</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- KARYA -->
+  <section class="sec" id="karya">
+    <div class="wrap">
+      <h2>Karya</h2>
+
+      <div class="tools">
+        <div class="chips" id="filters" role="group" aria-label="Filter kategori karya"></div>
+        <label class="search">
+          <span class="sr">Cari karya</span>
+          <input type="search" id="search" placeholder="Cari judul karya">
+        </label>
+      </div>
+
+      <ul class="docs" id="docs"></ul>
+      <p class="empty" id="empty" hidden>Tidak ada karya yang cocok. Coba kata kunci lain atau pilih kategori Semua.</p>
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section class="contact" id="kontak">
+    <div class="wrap contact__grid">
+      <h2>Tertarik menerima saya magang? Mari bicara.</h2>
+
+      <ul class="links">
+        <li><span>Email</span><a href="mailto:primeghas@gmail.com">primeghas@gmail.com</a></li>
+        <li><span>WhatsApp</span><a href="https://wa.me/6283173563023" target="_blank" rel="noopener">+62 831 7356 3023</a></li>
+        <li><span>Instagram</span><a href="https://instagram.com/grahnas01" target="_blank" rel="noopener">@grahnas01</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="marawa" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="wrap footer__inner">
+    <span>© <span id="year"></span> Ghani Prima Hasan</span>
+    <a href="#beranda">Kembali ke atas</a>
   </div>
-
-  <p class="footer-note">dibuat dengan sepenuh hati</p>
-</div>
+</footer>
 
 <script src="script.js"></script>
 </body>

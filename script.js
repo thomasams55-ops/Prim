@@ -1,120 +1,139 @@
-const NTFY_TOPIC = 'tembak-jr8kQx2mZp9';
-const NAMA = document.getElementById('namaCewek').textContent;
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
-const RUNAWAY_TEXTS = [
-  "Nggak dulu deh",
-  "Yakin nih mau nolak?",
-  "Kejar dulu makanya wkwk",
-  "Eh mau kemana?",
-  "Tombol sebelah kanan aja 👉",
-  "Susah ya buat ditekan?",
-  "Terpaksa juga gak apa-apa deh!",
-  `Jangan kabur dong ${NAMA}`,
-  "Pilih 'Ya' aja kenapa sih 😂"
-];
+  /* =========================================================
+     DAFTAR KARYA — edit bagian ini untuk menambah karya.
+     - judul, kategori, tahun, deskripsi : teks yang tampil
+     - file  : tautan karya. Bisa nama file di folder "karya/"
+               (contoh: "karya/laporan.pdf") atau tautan luar
+               (YouTube, Google Drive, Canva, dll).
+               Kosongkan ("") kalau belum ada: tampil "Segera hadir".
+     - unduh : true  -> muncul tombol Unduh (untuk file di folder karya/)
+     ========================================================= */
+  const KARYA = [
+    { judul: 'Hasil edit foto Lightroom', kategori: 'Foto',        tahun: '', deskripsi: 'Kumpulan foto hasil editan Lightroom akan ditambahkan di sini.', file: '', unduh: false },
+    { judul: 'Desain Canva',              kategori: 'Desain',      tahun: '', deskripsi: 'Desain poster dan konten buatan Canva akan ditambahkan di sini.', file: '', unduh: false },
+    { judul: 'Video CapCut',              kategori: 'Video',       tahun: '', deskripsi: 'Video hasil editan CapCut akan ditambahkan di sini.',            file: '', unduh: false },
+    { judul: 'Video Kinemaster',          kategori: 'Video',       tahun: '', deskripsi: 'Video hasil editan Kinemaster akan ditambahkan di sini.',        file: '', unduh: false },
+    { judul: 'Presentasi PowerPoint',     kategori: 'Presentasi',  tahun: '', deskripsi: 'Presentasi (PPT) akan ditambahkan di sini.',                     file: '', unduh: false },
+    { judul: 'Dokumen tugas dan laporan', kategori: 'Dokumen',     tahun: '', deskripsi: 'Dokumen dan laporan akan ditambahkan di sini.',                  file: '', unduh: false }
+  ];
 
-// Emoji besar yang muncul di tengah layar, disesuaikan dengan kata-kata di tombol
-const EMOJI_MAP = {
-  "Nggak dulu deh": "🙅‍♀️",
-  "Yakin nih mau nolak?": "🤨",
-  "Kejar dulu makanya wkwk": "🏃‍♀️",
-  "Eh mau kemana?": "👀",
-  "Tombol sebelah kanan aja 👉": "👉",
-  "Susah ya buat ditekan?": "😤",
-  "Terpaksa juga gak apa-apa deh!": "😏",
-  [`Jangan kabur dong ${NAMA}`]: "🥺",
-  "Pilih 'Ya' aja kenapa sih 😂": "😂"
-};
+  const ICONS = { Dokumen: '📄', Presentasi: '📊', Video: '🎬', Foto: '📷', Desain: '🎨' };
 
-function showBigEmoji(text){
-  const emoji = EMOJI_MAP[text] || "😳";
-  const el = document.createElement('div');
-  el.className = 'big-emoji-pop';
-  el.textContent = emoji;
-  const container = document.getElementById('bigEmoji');
-  container.appendChild(el);
-  setTimeout(() => el.remove(), 1100);
-}
+  const nav = $('#nav');
+  const progress = $('#progress');
+  const indicator = $('#indicator');
+  const burger = $('#burger');
+  const links = $$('.nav__link');
+  const mq = window.matchMedia('(max-width: 900px)');
 
-function showResult(){
-  document.getElementById('result').classList.add('show');
-  document.querySelector('.choices').style.display = 'none';
+  /* ---------- Garis progres ---------- */
+  function onScroll() {
+    const d = document.documentElement;
+    const max = d.scrollHeight - d.clientHeight;
+    progress.style.transform = 'scaleX(' + (max > 0 ? d.scrollTop / max : 0) + ')';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-  fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
-    method: 'POST',
-    body: `${NAMA} klik YA! 💕 Selamat, kalian resmian sekarang.`,
-    headers: { 'Title': 'Jawaban Diterima 🎉' }
-  }).catch(err => console.log('Gagal kirim notifikasi:', err));
-}
+  /* ---------- Penanda menu aktif (bergulir mengikuti bagian) ---------- */
+  let current = links[0];
 
-let lastMoveTime = 0;
-let isFirstNoPress = true;
-
-function runAway(btn){
-  const now = Date.now();
-  if (now - lastMoveTime < 150) return;
-  lastMoveTime = now;
-
-  // Efek emoji besar di tengah, cuma muncul saat pertama kali ditekan
-  if (isFirstNoPress) {
-    showBigEmoji(btn.textContent);
-    isFirstNoPress = false;
+  function moveIndicator() {
+    if (!current || mq.matches) { indicator.style.opacity = 0; return; }
+    indicator.style.opacity = 1;
+    indicator.style.width = current.offsetWidth + 'px';
+    indicator.style.transform = 'translateX(' + current.offsetLeft + 'px)';
   }
 
-  const btnRect = btn.getBoundingClientRect();
-  const yesRect = document.getElementById('yes').getBoundingClientRect();
-  const margin = 20;
-  const w = btnRect.width;
-  const h = btnRect.height;
-
-  if (btn.style.position !== 'fixed') {
-    btn.style.position = 'fixed';
-    btn.style.margin = '0';
-    btn.style.zIndex = '9999';
+  function setActive(link) {
+    current = link;
+    links.forEach(function (l) { l.classList.toggle('active', l === link); });
+    moveIndicator();
   }
 
-  const maxX = Math.max(margin, window.innerWidth - w - margin);
-  const maxY = Math.max(margin, window.innerHeight - h - margin);
+  setActive(links[0]);
+  window.addEventListener('resize', moveIndicator);
+  window.addEventListener('load', moveIndicator);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(moveIndicator);
 
-  // Jarak minimum dari tombol Ya, biar nggak nongol deket-deket
-  const minDist = Math.max(window.innerWidth, window.innerHeight) * 0.4;
-  const yesCenterX = yesRect.left + yesRect.width / 2;
-  const yesCenterY = yesRect.top + yesRect.height / 2;
+  const spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      const link = links.find(function (l) { return l.getAttribute('href') === '#' + entry.target.id; });
+      if (link) setActive(link);
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  $$('main section[id]').forEach(function (s) { spy.observe(s); });
 
-  let x, y, tries = 0;
-  do {
-    x = margin + Math.random() * (maxX - margin);
-    y = margin + Math.random() * (maxY - margin);
-    const dx = (x + w / 2) - yesCenterX;
-    const dy = (y + h / 2) - yesCenterY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    tries++;
-    if (dist >= minDist || tries > 20) break;
-  } while (true);
+  /* ---------- Menu HP ---------- */
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+  }
+  burger.addEventListener('click', function () { setMenu(!nav.classList.contains('open')); });
+  links.forEach(function (l) { l.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 
-  btn.style.left = x + 'px';
-  btn.style.top = y + 'px';
+  /* ---------- Daftar karya + filter + pencarian ---------- */
+  const filtersEl = $('#filters');
+  const docsEl = $('#docs');
+  const emptyEl = $('#empty');
+  const searchEl = $('#search');
+  const state = { kategori: 'Semua', q: '' };
 
-  btn.textContent = RUNAWAY_TEXTS[Math.floor(Math.random() * RUNAWAY_TEXTS.length)];
-}
+  function esc(str) {
+    return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
 
-// Floating hearts background
-const heartsContainer = document.getElementById('hearts');
-const HEART_SYMBOLS = ['💗', '💕', '💖', '🩷'];
+  function renderFilters() {
+    const cats = ['Semua'].concat(KARYA.map(function (k) { return k.kategori; }).filter(function (v, i, a) { return a.indexOf(v) === i; }));
+    filtersEl.innerHTML = cats.map(function (c) {
+      return '<button type="button" class="chip" data-kat="' + esc(c) + '" aria-pressed="' + (c === state.kategori) + '">' + esc(c) + '</button>';
+    }).join('');
+  }
 
-function spawnHeart(){
-  const h = document.createElement('div');
-  h.className = 'heart';
-  h.textContent = HEART_SYMBOLS[Math.floor(Math.random() * HEART_SYMBOLS.length)];
-  h.style.left = Math.random() * 100 + 'vw';
-  h.style.fontSize = (14 + Math.random() * 18) + 'px';
-  const duration = 6 + Math.random() * 6;
-  h.style.animationDuration = duration + 's';
-  heartsContainer.appendChild(h);
-  setTimeout(() => h.remove(), duration * 1000);
-}
+  function renderDocs() {
+    const q = state.q.trim().toLowerCase();
+    const list = KARYA.filter(function (k) {
+      const okKat = state.kategori === 'Semua' || k.kategori === state.kategori;
+      const okQ = !q || (k.judul + ' ' + k.deskripsi).toLowerCase().indexOf(q) !== -1;
+      return okKat && okQ;
+    });
 
-setInterval(spawnHeart, 500);
-for (let i = 0; i < 8; i++) setTimeout(spawnHeart, i * 200);
+    docsEl.innerHTML = list.map(function (k, i) {
+      const meta = [k.kategori, k.tahun].filter(Boolean).join(' • ');
+      let actions = '<span class="soon">Segera hadir</span>';
+      if (k.file) {
+        actions = '<a class="mini mini--ink" href="' + esc(k.file) + '" target="_blank" rel="noopener">Lihat</a>';
+        if (k.unduh) actions += '<a class="mini mini--line" href="' + esc(k.file) + '" download>Unduh</a>';
+      }
+      return '<li class="doc" style="animation-delay:' + (i * 0.05) + 's">' +
+        '<div class="doc__icon" aria-hidden="true">' + (ICONS[k.kategori] || '📁') + '</div>' +
+        '<div><h3>' + esc(k.judul) + '</h3><p class="doc__meta">' + esc(meta) + '</p><p class="doc__desc">' + esc(k.deskripsi) + '</p></div>' +
+        '<div class="doc__actions">' + actions + '</div></li>';
+    }).join('');
 
+    emptyEl.hidden = list.length > 0;
+  }
 
+  filtersEl.addEventListener('click', function (e) {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    state.kategori = btn.dataset.kat;
+    $$('.chip', filtersEl).forEach(function (c) { c.setAttribute('aria-pressed', String(c === btn)); });
+    renderDocs();
+  });
+  searchEl.addEventListener('input', function () { state.q = searchEl.value; renderDocs(); });
+
+  renderFilters();
+  renderDocs();
+
+  /* ---------- Tahun di footer ---------- */
+  $('#year').textContent = new Date().getFullYear();
+})();
