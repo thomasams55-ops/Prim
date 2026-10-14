@@ -1,119 +1,116 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080609">
-<title>Melawan Takdir — Ruang Sunyi</title>
-<style>
-:root{--red:#e63950;--white:#f5f1f2;--muted:#c5bdc2}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;margin:0} body{min-height:100vh;min-height:100svh;background:#050505;color:var(--white);font-family:Georgia,'Times New Roman',serif;overflow:hidden}
-.video-container,.overlay{position:fixed;inset:0}
-.video-container{z-index:0;background:#050505;overflow:hidden;display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:3px;padding:3px}
-.video-panel{position:relative;min-height:0;overflow:hidden;background:#090709;border-radius:2px;isolation:isolate}
-/* Pemisah tipis dan aksen editorial ala montage sinematik */
-.video-panel:not(:last-child)::before{content:"";position:absolute;z-index:3;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(244,222,228,.7) 22%,rgba(230,57,80,.9) 50%,rgba(244,222,228,.7) 78%,transparent);box-shadow:0 0 12px rgba(230,57,80,.28);pointer-events:none}
-.video-panel::before{pointer-events:none}
-.video-panel::after{z-index:2}
-.bg-video{position:absolute;display:block;width:100%;height:100%;object-fit:cover;inset:0;opacity:1;filter:brightness(.82) saturate(.88) contrast(1.04);background:#050505;transform:scale(1.08);will-change:transform;animation:cinemaZoom 22s ease-in-out infinite alternate;transform-origin:center center}
-.video-panel:nth-child(2) .bg-video{animation-name:cinemaZoomReverse;animation-duration:26s}
-.video-panel:nth-child(3) .bg-video{animation-duration:24s;animation-delay:-7s}
-@keyframes cinemaZoom{from{transform:scale(1.025) translate3d(-.4%,0,0)}to{transform:scale(1.15) translate3d(.6%,-1%,0)}}
-@keyframes cinemaZoomReverse{from{transform:scale(1.14) translate3d(.5%,.5%,0)}to{transform:scale(1.035) translate3d(-.5%,-.4%,0)}}
-/* Grain sangat halus memberi tekstur film tanpa mengganggu keterbacaan */
-.video-container .film-grain{position:absolute;z-index:1;inset:0;pointer-events:none;opacity:.055;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
-.video-panel:nth-child(1) .bg-video{object-position:center 38%}
-.video-panel:nth-child(2) .bg-video{object-position:center 45%}
-.video-panel:nth-child(3) .bg-video{object-position:center 50%}
-.video-panel::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.12),transparent 35%,rgba(0,0,0,.18)),linear-gradient(180deg,rgba(0,0,0,.12),transparent 45%,rgba(0,0,0,.22))}
-.video-container::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 90px 35px rgba(0,0,0,.38)}
-.overlay{z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.34) 48%,rgba(0,0,0,.58)),radial-gradient(ellipse at center,rgba(0,0,0,.06) 0%,rgba(0,0,0,.38) 100%)}
-.start-screen{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(ellipse at center,#191014 0%,#050505 70%);transition:opacity .9s ease,visibility .9s ease}
-.start-inner{max-width:540px}.eyebrow{font:11px/1.6 Arial,sans-serif;letter-spacing:.42em;text-transform:uppercase;color:#c1aeb4;margin-bottom:24px}
-.start-title{font-size:clamp(2rem,7vw,4rem);line-height:1.1;margin-bottom:18px;font-weight:normal}
-.start-sub{font:14px/1.8 Arial,sans-serif;color:#c9c0c4;margin:0 auto 30px;max-width:390px}
-.start-btn,.music-btn{color:var(--white);background:rgba(12,8,10,.55);border:1px solid rgba(230,57,80,.75);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .25s,transform .25s}
-.start-btn{padding:15px 25px;font:11px Arial,sans-serif;letter-spacing:.22em;box-shadow:0 0 24px rgba(230,57,80,.12)}
-.start-btn:hover,.music-btn:hover{background:rgba(230,57,80,.17);transform:translateY(-2px)}
-.hidden{opacity:0;visibility:hidden;pointer-events:none}
-.main-content{position:relative;z-index:3;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:30px 22px;text-align:center;opacity:0;transition:opacity 1.5s ease}
-.main-content.visible{opacity:1}
-.quote-wrap{max-width:900px;animation:rise 1.4s ease both}
-.rule{width:56px;height:1px;background:var(--red);margin:0 auto 28px;box-shadow:0 0 14px rgba(230,57,80,.8)}
-.quote-title{font-size:clamp(2rem,6.5vw,5rem);font-weight:normal;line-height:1.14;letter-spacing:.015em;text-wrap:balance;text-shadow:0 4px 30px rgba(0,0,0,.8)}
-.quote-title em{font-style:normal;color:#f06a7c}
-.quote-text{max-width:610px;margin:24px auto 0;color:#e0d9dc;font-size:clamp(1rem,2.4vw,1.2rem);line-height:1.9;text-shadow:0 2px 12px #000}
-.signature{margin-top:32px;color:#c3b2b8;font:10px Arial,sans-serif;letter-spacing:.38em;text-transform:uppercase}
-.music-control{position:fixed;z-index:5;left:20px;bottom:20px;display:flex;align-items:center;gap:12px}
-.music-btn{width:42px;height:42px;border-radius:50%;font-size:15px;letter-spacing:0}
-.music-label{font:10px/1.7 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#e4dce0;text-shadow:0 2px 8px #000}
-.sound-wave{display:inline-flex;align-items:center;gap:3px;height:12px;margin-right:7px;vertical-align:middle}
-.sound-wave i{display:block;width:2px;height:4px;background:var(--red)}.playing .sound-wave i{animation:wave .8s ease-in-out infinite alternate}.playing .sound-wave i:nth-child(2){animation-delay:.15s}.playing .sound-wave i:nth-child(3){animation-delay:.3s}.playing .sound-wave i:nth-child(4){animation-delay:.45s}
-@keyframes wave{to{height:12px}}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:520px){.quote-text{line-height:1.75}.signature{letter-spacing:.22em}.music-control{left:14px;bottom:14px}.music-label{font-size:9px}.video-container{gap:3px;padding:3px}.bg-video{filter:brightness(.78) saturate(.84) contrast(1.04)}.quote-title{font-size:clamp(1.9rem,8vw,3.2rem)}.rule{margin-bottom:22px}}
-@media(min-width:900px){.video-container{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr;gap:4px;padding:4px}.video-panel:not(:last-child)::before{top:0;bottom:0;left:auto;right:0;width:1px;height:auto;background:linear-gradient(180deg,transparent,rgba(244,222,228,.7) 22%,rgba(230,57,80,.9) 50%,rgba(244,222,228,.7) 78%,transparent)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melawan Takdir — Ruang Sunyi</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Georgia', serif;
+            text-align: center;
+            padding: 60px 20px;
+            margin: 0;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .sub-title {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #888;
+            text-transform: uppercase;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: normal;
+            margin: 30px 0;
+            color: #ffffff;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: normal;
+            margin-top: 40px;
+            color: #ffffff;
+        }
+        p {
+            font-size: 16px;
+            color: #b3b3b3;
+            margin: 20px 0;
+        }
+        .btn-masuk {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            font-size: 15px;
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-masuk:hover {
+            background-color: #ffffff;
+            color: #121212;
+        }
+        .footer-music {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-<div class="video-container" aria-hidden="true">
-  <div class="video-panel" aria-label="Video Naruto di bagian atas">
-    <video id="bgVideo1" class="bg-video" autoplay loop muted playsinline preload="auto"><source src="assets/naruto.mp4" type="video/mp4"></video>
-  </div>
-  <div class="video-panel" aria-label="Video tengkorak di bagian tengah">
-    <video id="bgVideo2" class="bg-video" autoplay loop muted playsinline preload="auto"><source src="assets/skeleton.mp4" type="video/mp4"></video>
-  </div>
-  <div class="video-panel" aria-label="Video vertikal di bagian bawah">
-    <video id="bgVideo3" class="bg-video" autoplay loop muted playsinline preload="auto"><source src="assets/lagu.mp3.mp4" type="video/mp4"></video>
-  </div>
-  <div class="film-grain"></div>
-</div>
-<div class="overlay"></div>
-<div class="start-screen" id="startScreen">
-  <div class="start-inner">
-    <div class="eyebrow">Sebuah ruang untuk bertahan</div>
-    <h1 class="start-title">Di balik sunyi,<br>aku masih <em style="color:#f06a7c">berdiri.</em></h1>
-    <p class="start-sub">Dengarkan melodinya. Baca perlahan. Tidak semua luka harus dijelaskan kepada dunia.</p>
-    <button class="start-btn" id="startBtn">Masuk ke keheningan&nbsp; ↗</button>
-  </div>
-</div>
-<main class="main-content" id="mainContent" aria-live="polite">
-  <div class="quote-wrap">
-    <div class="rule"></div>
-    <h2 class="quote-title">Aku akan melawanmu,<br><em>wahai takdir.</em></h2>
-    <p class="quote-text">Jika hidup memilih untuk mengujiku, aku akan memilih untuk tetap berdiri. Bukan karena aku tak pernah lelah, tetapi karena menyerah bukan satu-satunya jalan.</p>
-    <div class="signature">Pelan-pelan, tetap berjalan</div>
-  </div>
-</main>
-<div class="music-control hidden" id="musicControl">
-  <button class="music-btn" id="musicBtn" aria-label="Jeda musik" title="Putar atau jeda musik">Ⅱ</button>
-  <div class="music-label" id="musicLabel"><span class="sound-wave"><i></i><i></i><i></i><i></i></span>So Far Away · melodi</div>
-</div>
-<audio id="myAudio" preload="auto" loop><source src="assets/so-far-away.m4a" type="audio/mp4"><source src="assets/lagu.mp3.mp4" type="audio/mp4"></audio>
-<script>
-const startScreen=document.getElementById('startScreen');
-const startBtn=document.getElementById('startBtn');
-const mainContent=document.getElementById('mainContent');
-const audio=document.getElementById('myAudio');
-const v1=document.getElementById('bgVideo1');
-const v2=document.getElementById('bgVideo2');
-const v3=document.getElementById('bgVideo3');
-const musicControl=document.getElementById('musicControl');
-const musicBtn=document.getElementById('musicBtn');
-const musicLabel=document.getElementById('musicLabel');
-let started=false, playing=false, showingFirst=true;
-// Tampilkan pesan jika file media gagal dimuat, agar mudah diketahui penyebabnya.
-audio.addEventListener('error',()=>{musicLabel.textContent='Musik gagal dimuat — periksa folder assets';});
-[v1,v2,v3].forEach((video)=>video.addEventListener('error',()=>{console.warn('Video gagal dimuat:',video.querySelector('source')?.src);}));
-function setPlaying(value){playing=value;musicBtn.textContent=value?'Ⅱ':'▶';musicBtn.setAttribute('aria-label',value?'Jeda musik':'Putar musik');musicLabel.classList.toggle('playing',value)}
-async function startApp(){if(started)return;started=true;startScreen.classList.add('hidden');mainContent.classList.add('visible');musicControl.classList.remove('hidden');[v1,v2,v3].forEach(video=>{video.muted=true;video.play().catch(()=>{});});try{await audio.play();setPlaying(true)}catch(e){setPlaying(false);musicLabel.textContent='Tekan ▶ untuk mencoba memutar musik';console.warn('Audio belum bisa diputar:',e);}}
-startBtn.addEventListener('click',startApp);
-startScreen.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startApp()}});
-musicBtn.addEventListener('click',async()=>{if(audio.paused){try{await audio.play();setPlaying(true)}catch(e){setPlaying(false)}}else{audio.pause();setPlaying(false)}});
-audio.addEventListener('play',()=>setPlaying(true));audio.addEventListener('pause',()=>setPlaying(false));
-// Ketiga video tampil bersamaan sebagai mozaik sinematik vertikal; musik diputar terpisah.
-</script>
+
+    <div class="container">
+        <!-- Teks Asli Bagian Atas -->
+        <div class="sub-title">Sebuah ruang untuk bertahan</div>
+        <h1>Di balik sunyi, aku masih <em>berdiri.</em></h1>
+        <p>Dengarkan melodinya. Baca perlahan. Tidak semua luka harus dijelaskan kepada dunia.</p>
+
+        <!-- Tombol Pemicu Suara untuk Mengatasi Blokir HP -->
+        <!-- Tombol ini menggunakan teks asli Anda 'Masuk ke keheningan' -->
+        <button id="tombolMusik" class="btn-masuk" onclick="putarMusik()">
+            Masuk ke keheningan ↗
+        </button>
+
+        <!-- Teks Asli Bagian Bawah -->
+        <h2>Aku akan melawanmu, <em>wahai takdir.</em></h2>
+        <p>Jika hidup memilih untuk mengujiku, aku akan memilih untuk tetap berdiri. Bukan karena aku tak pernah lelah, tetapi karena menyerah bukan satu-satunya jalan.</p>
+        <p style="font-style: italic; color: #888;">Pelan-pelan, tetap berjalan</p>
+        
+        <div style="font-size: 20px; margin: 20px 0;">Ⅱ</div>
+        
+        <div class="footer-music">So Far Away · melodi</div>
+    </div>
+
+    <!-- 1. KODE AUDIO: Ganti 'musik.mp3' di bawah ini dengan nama persis file lagu Anda di GitHub jika berbeda -->
+    <audio id="laguLatar" src="musik.mp3" loop></audio>
+
+    <script>
+        function putarMusik() {
+            var audio = document.getElementById('laguLatar');
+            var tombol = document.getElementById('tombolMusik');
+            
+            audio.play().then(function() {
+                // Saat musik berhasil berputar, teks tombol berubah sebagai penanda
+                tombol.innerHTML = "✓ Keheningan Dimulai";
+                tombol.style.borderColor = "#888";
+                tombol.style.color = "#888";
+                tombol.style.cursor = "default";
+                tombol.onclick = null; // Menonaktifkan klik ulang
+            }).catch(function(error) {
+                alert("Gagal memutar musik. Pastikan nama file MP3 Anda di GitHub sudah bernama 'musik.mp3' agar sesuai kode!");
+                console.log(error);
+            });
+        }
+    </script>
+
 </body>
 </html>
