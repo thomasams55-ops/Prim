@@ -1,0 +1,14 @@
+CARA MEMBUKA WEBSITE MOzaIK SINEMATIK
+
+1. Ekstrak seluruh isi ZIP ke satu folder.
+2. Jangan pisahkan index.html dari folder assets.
+3. Buka index.html menggunakan Chrome atau Edge.
+4. Tekan tombol Masuk ke keheningan untuk memulai musik dan menampilkan tulisan.
+5. Jika musik tidak otomatis berbunyi, gunakan tombol ▶ di kiri bawah.
+
+SUSUNAN VIDEO
+- HP: tiga panel horizontal bertumpuk (Naruto atas, skeleton tengah, video ketiga bawah).
+- Layar lebar: tiga panel berdampingan untuk nuansa montage sinematik.
+- Semua video berjalan bersamaan tanpa suara; musik utama dikontrol melalui tombol musik.
+
+Jika media tidak muncul, pastikan folder assets ikut diekstrak dan nama file di dalamnya tidak diubah.
